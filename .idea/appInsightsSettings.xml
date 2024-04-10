@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.chittoor.learncprogramming" />
+                  <option name="appId" value="com.abhaya.abhayango" />
                 </ConnectionSetting>
               </option>
               <option name="failureTypes">

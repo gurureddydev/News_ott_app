@@ -2,7 +2,7 @@ package com.guru.demoottapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.guru.data_common.local.User
+import com.guru.data_common.local.UserEntity
 import com.guru.data_common.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +15,8 @@ class MainViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _users = MutableStateFlow<List<User>?>(null)
-    val users: StateFlow<List<User>?> = _users
+    private val _users = MutableStateFlow<List<UserEntity>?>(null)
+    val users: StateFlow<List<UserEntity>?> = _users
 
     init {
         // Immediately load data from the local database

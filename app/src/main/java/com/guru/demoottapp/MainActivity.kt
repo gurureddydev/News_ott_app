@@ -23,13 +23,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
-import com.guru.data_common.local.User
+import com.guru.data_common.local.UserEntity
 import com.guru.demoottapp.ui.theme.DemoOTTAppTheme
 import com.guru.demoottapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,7 +71,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
-fun UserList(users: List<User>?) {
+fun UserList(users: List<UserEntity>?) {
     LazyColumn {
         items(users ?: emptyList()) { user ->
             UserItem(user = user)
@@ -83,7 +80,7 @@ fun UserList(users: List<User>?) {
 }
 
 @Composable
-fun UserItem(user: User) {
+fun UserItem(user: UserEntity) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = rememberImagePainter(user.image_url),
