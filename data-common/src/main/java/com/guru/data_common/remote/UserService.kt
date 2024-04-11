@@ -1,7 +1,6 @@
 package com.guru.data_common.remote
 
-import com.guru.data_common.local.UserEntity
-import model.UserDM
+import com.guru.domain_common.model.UserDM
 import retrofit2.http.GET
 
 interface UserService {

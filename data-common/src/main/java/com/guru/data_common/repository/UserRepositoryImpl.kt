@@ -1,17 +1,14 @@
 package com.guru.data_common.repository
 
-import UserDomainRepository
-import com.guru.data_common.local.UserEntity
 import com.guru.data_common.local.UserDao
 import com.guru.data_common.remote.UserService
+import com.guru.domain_common.model.UserDM
+import com.guru.domain_common.repository.UserDomainRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import model.UserDM
 import toListUserDM
 import toListUserEntity
-import java.io.IOException
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -19,21 +16,17 @@ class UserRepositoryImpl @Inject constructor(
     private val userService: UserService
 ) : UserDomainRepository {
 
-    override suspend fun getUsers(isRemote:Boolean): Flow<List<UserDM>>  = flow {
-       if(!isRemote) {
-           try {
-               userDao.getAllUsers().map { it.toListUserDM() }
-           }catch (e:Exception){
-               val usersFromNetwork = userService.getUsers()
-               userDao.insertUsers(usersFromNetwork.toListUserEntity())
-               userDao.getAllUsers().map { it.toListUserDM() }
-           }
-       }else {
-            userService.getUsers()
-       }
+    override suspend fun getUsers(isRemote: Boolean): Flow<List<UserDM>> {
+        return if (!isRemote) {
+            userDao.getAllUsers().map { it.toListUserDM() }
+        } else {
+            val usersFromNetwork = userService.getUsers()
+            userDao.insertUsers(usersFromNetwork.toListUserEntity())
+            userDao.getAllUsers().map { it.toListUserDM() }
+        }
     }
 
-     suspend fun refreshUsers() {
+     override suspend fun refreshUsers() {
         val users = userService.getUsers()
         userDao.insertUsers(users.toListUserEntity())
     }

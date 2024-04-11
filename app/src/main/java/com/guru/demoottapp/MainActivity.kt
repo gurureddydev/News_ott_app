@@ -20,15 +20,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
-import com.guru.data_common.local.UserEntity
 import com.guru.demoottapp.ui.theme.DemoOTTAppTheme
 import com.guru.demoottapp.viewmodel.MainViewModel
+import com.guru.domain_common.model.UserDM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +54,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
+    var isLoading by remember { mutableStateOf(false) }
     val users = viewModel.users.collectAsState(initial = null).value
 
     Column(
@@ -60,7 +65,11 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { viewModel.refreshUsers() }, // Call refreshUsers() to fetch users
+            onClick = {
+                isLoading = true
+                viewModel.refreshUsers()
+            },
+            enabled = !isLoading, // Disable the button when isLoading is true
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
             Text(text = "Fetch Users")
@@ -70,8 +79,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     }
 }
 
+
 @Composable
-fun UserList(users: List<UserEntity>?) {
+fun UserList(users: List<UserDM>?) {
     LazyColumn {
         items(users ?: emptyList()) { user ->
             UserItem(user = user)
@@ -80,7 +90,7 @@ fun UserList(users: List<UserEntity>?) {
 }
 
 @Composable
-fun UserItem(user: UserEntity) {
+fun UserItem(user: UserDM) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = rememberImagePainter(user.image_url),
@@ -92,4 +102,3 @@ fun UserItem(user: UserEntity) {
         user.name?.let { Text(text = it) }
     }
 }
-

@@ -6,8 +6,12 @@ import com.guru.data_common.local.UserDao
 import com.guru.data_common.local.UserDatabase
 import com.guru.data_common.remote.RetrofitClient
 import com.guru.data_common.remote.UserService
-import com.guru.data_common.repository.UserRepository
 import com.guru.data_common.repository.UserRepositoryImpl
+import com.guru.domain_common.repository.UserDomainRepository
+import com.guru.domain_common.usecase.GetUsersUseCase
+import com.guru.domain_common.usecase.GetUsersUseCaseImpl
+import com.guru.domain_common.usecase.RefreshUsersUseCase
+import com.guru.domain_common.usecase.RefreshUsersUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +51,20 @@ object AppModule {
     fun provideUserRepository(
         userDao: UserDao,
         userService: UserService
-    ): UserRepository {
+    ): UserDomainRepository {
         return UserRepositoryImpl(userDao, userService)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetUsersUseCase(userRepository: UserDomainRepository): GetUsersUseCase {
+        return GetUsersUseCaseImpl(userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefreshUsersUseCase(userRepository: UserDomainRepository): RefreshUsersUseCase {
+        return RefreshUsersUseCaseImpl(userRepository)
+    }
+
 }

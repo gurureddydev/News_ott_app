@@ -1,5 +1,5 @@
 import com.guru.data_common.local.UserEntity
-import model.UserDM
+import com.guru.domain_common.model.UserDM
 
 
 internal fun UserEntity.toUserDM() : UserDM {

@@ -2,8 +2,9 @@ package com.guru.demoottapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.guru.data_common.local.UserEntity
-import com.guru.data_common.repository.UserRepository
+import com.guru.domain_common.model.UserDM
+import com.guru.domain_common.usecase.GetUsersUseCase
+import com.guru.domain_common.usecase.RefreshUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,11 +13,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val getUsersUseCase: GetUsersUseCase,
+    private val refreshUsersUseCase: RefreshUsersUseCase
 ) : ViewModel() {
 
-    private val _users = MutableStateFlow<List<UserEntity>?>(null)
-    val users: StateFlow<List<UserEntity>?> = _users
+    private val _users = MutableStateFlow<List<UserDM>?>(null)
+    val users: StateFlow<List<UserDM>?> = _users
 
     init {
         // Immediately load data from the local database
@@ -25,7 +27,7 @@ class MainViewModel @Inject constructor(
 
     private fun loadUsersFromDatabase() {
         viewModelScope.launch {
-            userRepository.getUsers().collect { userList ->
+            getUsersUseCase(isRemote = false).collect { userList ->
                 _users.value = userList
             }
         }
@@ -34,15 +36,7 @@ class MainViewModel @Inject constructor(
     // Method to refresh users
     fun refreshUsers() {
         viewModelScope.launch {
-            // Check if the local database contains data
-            val localUsers = _users.value
-            if (localUsers == null || localUsers.isEmpty()) {
-                // If no data in local database, fetch from network
-                userRepository.refreshUsers()
-            } else {
-                // If data is present in local database, update UI with existing data
-                _users.value = localUsers
-            }
+            refreshUsersUseCase()
         }
     }
 }
