@@ -12,6 +12,7 @@ import com.guru.domain_common.usecase.GetUsersUseCase
 import com.guru.domain_common.usecase.GetUsersUseCaseImpl
 import com.guru.domain_common.usecase.RefreshUsersUseCase
 import com.guru.domain_common.usecase.RefreshUsersUseCaseImpl
+import com.guru.domain_common.usecase.UserUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,4 +68,12 @@ object AppModule {
         return RefreshUsersUseCaseImpl(userRepository)
     }
 
+    @Provides
+    @Singleton
+    fun provideUserUseCases(
+        getUsersUseCase: GetUsersUseCase,
+        refreshUsersUseCase: RefreshUsersUseCase
+    ): UserUseCases {
+        return UserUseCases(getUsersUseCase, refreshUsersUseCase)
+    }
 }

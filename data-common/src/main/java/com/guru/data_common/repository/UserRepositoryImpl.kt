@@ -5,7 +5,7 @@ import com.guru.data_common.remote.UserService
 import com.guru.domain_common.model.UserDM
 import com.guru.domain_common.repository.UserDomainRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import toListUserDM
 import toListUserEntity
@@ -21,13 +21,19 @@ class UserRepositoryImpl @Inject constructor(
             userDao.getAllUsers().map { it.toListUserDM() }
         } else {
             val usersFromNetwork = userService.getUsers()
-            userDao.insertUsers(usersFromNetwork.toListUserEntity())
+            val localUsers = userDao.getAllUsers().firstOrNull()
+            if (localUsers.isNullOrEmpty()) {
+                userDao.insertUsers(usersFromNetwork.toListUserEntity())
+            }
             userDao.getAllUsers().map { it.toListUserDM() }
         }
     }
 
-     override suspend fun refreshUsers() {
-        val users = userService.getUsers()
-        userDao.insertUsers(users.toListUserEntity())
+    override suspend fun refreshUsers() {
+        val usersFromNetwork = userService.getUsers()
+        val localUsers = userDao.getAllUsers().firstOrNull()
+        if (localUsers.isNullOrEmpty()) {
+            userDao.insertUsers(usersFromNetwork.toListUserEntity())
+        }
     }
 }
