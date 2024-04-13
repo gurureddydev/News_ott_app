@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     var isLoading by remember { mutableStateOf(false) }
-    val users = viewModel.users.collectAsState(initial = null).value
+    val userListState by viewModel.userListState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -75,7 +75,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             Text(text = "Fetch Users")
         }
 
-        UserList(users = users)
+        UserList(users = userListState.users)
     }
 }
 
