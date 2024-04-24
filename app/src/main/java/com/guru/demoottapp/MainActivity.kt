@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
             DemoOTTAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onBackground
                 ) {
                     HomeScreen()
                 }

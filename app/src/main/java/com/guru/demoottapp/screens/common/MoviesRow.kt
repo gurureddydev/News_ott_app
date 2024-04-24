@@ -92,6 +92,7 @@ fun MoviesRow(
             Text(
                 text = nnTitle,
                 style = titleStyle,
+                color = Color.White,
                 modifier = Modifier
                     .alpha(1f)
                     .padding(start = startPadding)
@@ -162,6 +163,7 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
             Text(
                 text = nnTitle,
                 style = titleStyle,
+                color = Color.White,
                 modifier = Modifier
                     .alpha(1f)
                     .padding(start = startPadding)
@@ -248,7 +250,7 @@ private fun MoviesRowItem(
                     focusedBorder = Border(
                         border = BorderStroke(
                             width = NewsBorderWidth,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = Color.White // Set color to white
                         ),
                         shape = NewsCardShape
                     )
@@ -342,6 +344,7 @@ private fun MoviesRowItemText(
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.SemiBold
             ),
+            color = Color.White,
             textAlign = TextAlign.Center,
             modifier = modifier
                 .alpha(movieNameAlpha)

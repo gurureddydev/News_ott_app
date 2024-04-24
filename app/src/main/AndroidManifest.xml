@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DemoOTTApp"
         tools:targetApi="31"
-        android:banner="@drawable/play_ic">
+        android:banner="@drawable/logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"

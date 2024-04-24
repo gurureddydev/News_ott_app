@@ -53,7 +53,7 @@ fun Top10MoviesList(
         modifier = modifier.onGloballyPositioned { currentYCoord = it.positionInWindow().y },
         background = { _, listHasFocus ->
             isListFocused = listHasFocus
-            val gradientColor = MaterialTheme.colorScheme.surface
+            val gradientColor = MaterialTheme.colorScheme.onBackground
             AnimatedVisibility(
                 visible = isListFocused,
                 enter = fadeIn() + expandVertically(),
@@ -97,13 +97,17 @@ fun Top10MoviesList(
                             bottom = 32.dp
                         )
                     ) {
-                        Text(text = movie.name, style = MaterialTheme.typography.displaySmall)
+                        Text(
+                            text = movie.name,
+                            style = MaterialTheme.typography.displaySmall,
+                            color = Color.White
+                        )
                         Spacer(modifier = Modifier.padding(top = 8.dp))
                         Text(
                             modifier = Modifier.fillMaxWidth(0.5f),
                             text = movie.description,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
+                            color = Color.White,
                             fontWeight = FontWeight.Light
                         )
                     }

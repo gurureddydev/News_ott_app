@@ -6,7 +6,7 @@
     </item>
 
     <!-- Bitmap (Play Icon) -->
-    <item android:drawable="@drawable/play_ic"
+    <item android:drawable="@drawable/logo"
         android:gravity="center"/>
 
 </layer-list>

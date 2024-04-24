@@ -137,7 +137,7 @@ fun FeaturedMoviesCarousel(
             .padding(start = padding.start, end = padding.start, top = padding.top)
             .border(
                 width = NewsBorderWidth,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (isCarouselFocused) 1f else 0f),
+                color = Color.White.copy(alpha = if (isCarouselFocused) 1f else 0f),
                 shape = ShapeDefaults.Medium,
             )
             .semantics {
@@ -146,7 +146,7 @@ fun FeaturedMoviesCarousel(
             }
             .clip(ShapeDefaults.Medium)
             .onFocusChanged {
-                isCarouselFocused = it.isFocused
+                isCarouselFocused = it.hasFocus
             },
         itemCount = movies.size,
         carouselState = carouselState,
@@ -185,7 +185,7 @@ private fun BoxScope.CarouselIndicator(
 ) {
     Box(
         modifier = modifier
-            .padding(16.dp)
+            .padding(32.dp)
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
             .graphicsLayer {
                 clip = true
@@ -280,7 +280,7 @@ private fun WatchNowButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier.padding(top = 8.dp),
-        contentPadding = ButtonDefaults.ContentPadding,
+        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
         shape = ButtonDefaults.shape(shape = NewsButtonShape),
         colors = ButtonDefaults.colors(
             containerColor = MaterialTheme.colorScheme.onSurface,
