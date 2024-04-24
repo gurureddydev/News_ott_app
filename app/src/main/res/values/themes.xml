@@ -2,4 +2,15 @@
 <resources>
 
     <style name="Theme.DemoOTTApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.DemoOTTApp.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/baseline_account_circle_24</item>
+        <item name="postSplashScreenTheme">@style/Theme.DemoOTTApp</item>
+    </style>
+
+    <style name="Theme.SplashScreens" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="statusBarBackground">#32357A</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>

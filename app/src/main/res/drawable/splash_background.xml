@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Color -->
+    <item android:id="@+id/background_item">
+        <color android:color="@color/white" />
+    </item>
+
+    <!-- Bitmap (Play Icon) -->
+    <item android:drawable="@drawable/play_ic"
+        android:gravity="center"/>
+
+</layer-list>

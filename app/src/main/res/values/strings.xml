@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Demo OTT App</string>
+    <string name="watch_now">Watch Now</string>
+    <string name="top_10_movies_title">Top 10 in the News</string>
 </resources>
