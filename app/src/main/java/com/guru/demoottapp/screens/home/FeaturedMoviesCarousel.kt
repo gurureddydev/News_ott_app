@@ -120,7 +120,6 @@ val CarouselSaver = Saver<CarouselState, Int>(
     restore = { CarouselState(it) }
 )
 
-
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun FeaturedMoviesCarousel(
