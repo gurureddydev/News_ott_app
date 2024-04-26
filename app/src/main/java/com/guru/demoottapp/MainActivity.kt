@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,7 +33,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.tv.material3.ExperimentalTvMaterial3Api
+import androidx.tv.material3.LocalContentColor
 import coil.compose.rememberImagePainter
+import com.guru.demoottapp.screens.App
 import com.guru.demoottapp.screens.home.HomeScreen
 import com.guru.demoottapp.ui.theme.DemoOTTAppTheme
 import com.guru.demoottapp.viewmodel.MainViewModel
@@ -39,16 +45,24 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalTvMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
             DemoOTTAppTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.onBackground
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(androidx.tv.material3.MaterialTheme.colorScheme.onBackground)
                 ) {
-                    HomeScreen()
+                    CompositionLocalProvider(
+                        LocalContentColor provides androidx.tv.material3.MaterialTheme.colorScheme.errorContainer
+                    ) {
+                        App(
+                            onBackPressed = onBackPressedDispatcher::onBackPressed,
+                        )
+                    }
                 }
             }
         }

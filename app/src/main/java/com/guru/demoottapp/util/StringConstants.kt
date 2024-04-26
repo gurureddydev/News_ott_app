@@ -31,6 +31,14 @@ object StringConstants {
     }
 
     object Composable {
+        fun truncateText(text: String, maxWords: Int): String {
+            val words = text.split(" ")
+            return if (words.size > maxWords) {
+                words.take(maxWords).joinToString(" ") + "..."
+            } else {
+                text
+            }
+        }
         object ContentDescription {
             fun moviePoster(movieName: String) = "Movie poster of $movieName"
             fun image(imageName: String) = "image of $imageName"

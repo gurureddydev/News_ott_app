@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -57,7 +58,7 @@ import com.guru.demoottapp.ui.theme.NewsBorderWidth
 import com.guru.demoottapp.ui.theme.NewsButtonShape
 
 // Dummy data models
-data class Movie(
+data class News(
     val id: Long,
     val name: String,
     val description: String,
@@ -65,51 +66,50 @@ data class Movie(
 )
 
 // Function to generate dummy movie data
-fun generateDummyMovies(): List<Movie> {
+fun generateDummyMovies(): List<News> {
     return listOf(
-        Movie(
+        News(
             id = 0,
-            name = "Movie 1",
-            description = "Description for Movie 1",
+            name = "Breaking News: Earthquake Hits Major City",
+            description = "A powerful earthquake shook the city early this morning, causing widespread damage and panic.",
             posterUri = R.drawable.news
         ),
-        Movie(
+        News(
             id = 1,
-            name = "Movie 2",
-            description = "Description for Movie 2",
+            name = "Political Scandal Uncovered",
+            description = "Investigative journalists reveal shocking details about corruption at the highest levels of government.",
             posterUri = R.drawable.news1
         ),
-        Movie(
+        News(
             id = 2,
-            name = "Movie 3",
-            description = "Description for Movie 3",
+            name = "Climate Change Report: Urgent Action Needed",
+            description = "New scientific findings show that the effects of climate change are accelerating, prompting calls for immediate intervention.",
             posterUri = R.drawable.news2
         ),
-        Movie(
+        News(
             id = 3,
-            name = "Movie 1",
-            description = "Description for Movie 1",
+            name = "Health Crisis: New Virus Strain Detected",
+            description = "Health officials warn about a new, highly contagious virus strain spreading rapidly across regions.",
             posterUri = R.drawable.news3
         ),
-        Movie(
+        News(
             id = 4,
-            name = "Movie 2",
-            description = "Description for Movie 2",
+            name = "Technology Breakthrough: AI Revolutionizes Industry",
+            description = "Experts discuss the transformative impact of artificial intelligence on various sectors of the economy.",
             posterUri = R.drawable.news4
         ),
-        Movie(
+        News(
             id = 5,
-            name = "Movie 3",
-            description = "Description for Movie 3",
-            posterUri = R.drawable.news
+            name = "Global Economy Update: Market Volatility Continues",
+            description = "Financial analysts analyze the latest trends in global markets amid ongoing volatility and uncertainty.",
+            posterUri = R.drawable.news3
         ),
-        Movie(
+        News(
             id = 6,
-            name = "Movie 3",
-            description = "Description for Movie 3",
-            posterUri = R.drawable.news
+            name = "Space Exploration: New Discoveries Beyond Our Solar System",
+            description = "Astronomers announce groundbreaking discoveries of exoplanets and potential signs of extraterrestrial life.",
+            posterUri = R.drawable.news2
         )
-        // Add more movies as needed
     )
 }
 
@@ -122,11 +122,11 @@ val CarouselSaver = Saver<CarouselState, Int>(
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-fun FeaturedMoviesCarousel(
+fun FeaturedNewsCarousel(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     padding: Padding,
-
-    ) {
+) {
     val movies = generateDummyMovies()
     val carouselState = rememberSaveable(saver = CarouselSaver) { CarouselState(0) }
     var isCarouselFocused by remember { mutableStateOf(false) }
@@ -162,10 +162,14 @@ fun FeaturedMoviesCarousel(
         content = { index ->
             val movie = movies[index]
             // background
-            CarouselItemBackground(movie = movie, modifier = Modifier.fillMaxSize())
+            CarouselItemBackground(
+                news = movie,
+                onClick = onClick,
+                modifier = Modifier.fillMaxSize()
+            )
             // foreground
             CarouselItemForeground(
-                movie = movie,
+                news = movie,
                 isCarouselFocused = isCarouselFocused,
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -205,7 +209,7 @@ private fun BoxScope.CarouselIndicator(
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 private fun CarouselItemForeground(
-    movie: Movie,
+    news: News,
     modifier: Modifier = Modifier,
     isCarouselFocused: Boolean = false,
     onClick: () -> Unit
@@ -221,15 +225,15 @@ private fun CarouselItemForeground(
             verticalArrangement = Arrangement.Bottom
         ) {
             Text(
-                text = movie.name,
+                text = news.name,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.displayMedium.copy(
+                style = MaterialTheme.typography.headlineMedium.copy(
                 ),
                 maxLines = 1
             )
             Text(
-                text = movie.description,
+                text = news.description,
                 color = Color.White.copy(alpha = 0.5f),
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(
@@ -250,14 +254,19 @@ private fun CarouselItemForeground(
 }
 
 @Composable
-private fun CarouselItemBackground(movie: Movie, modifier: Modifier = Modifier) {
+private fun CarouselItemBackground(
+    news: News,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     AsyncImage(
-        model = movie.posterUri,
+        model = news.posterUri,
         contentDescription = StringConstants
             .Composable
             .ContentDescription
-            .moviePoster(movie.name),
+            .moviePoster(news.name),
         modifier = modifier
+            .clickable { onClick() }
             .drawWithContent {
                 drawContent()
                 drawRect(
@@ -282,8 +291,8 @@ private fun WatchNowButton(onClick: () -> Unit) {
         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
         shape = ButtonDefaults.shape(shape = NewsButtonShape),
         colors = ButtonDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.onSurface,
-            contentColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             focusedContentColor = MaterialTheme.colorScheme.surface,
         ),
         scale = ButtonDefaults.scale(scale = 1f)

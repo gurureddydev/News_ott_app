@@ -21,8 +21,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,7 +32,7 @@ import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.guru.demoottapp.R
-import com.guru.demoottapp.screens.common.ImmersiveListMoviesRow
+import com.guru.demoottapp.screens.common.ImmersiveListNewsRow
 import com.guru.demoottapp.screens.common.ItemDirection
 import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 
@@ -42,15 +40,13 @@ import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 @Composable
 fun Top10MoviesList(
     modifier: Modifier = Modifier,
-    moviesState: List<Movie>,
-//    onMovieClick: (movie: Movie) -> Unit
+    newsState: List<News>,
 ) {
     var currentItemIndex by remember { mutableStateOf(0) }
     var isListFocused by remember { mutableStateOf(false) }
-    var currentYCoord: Float? by remember { mutableStateOf(null) }
 
     ImmersiveList(
-        modifier = modifier.onGloballyPositioned { currentYCoord = it.positionInWindow().y },
+        modifier = modifier,
         background = { _, listHasFocus ->
             isListFocused = listHasFocus
             val gradientColor = MaterialTheme.colorScheme.onBackground
@@ -62,12 +58,12 @@ fun Top10MoviesList(
                     .height(432.dp)
                     .gradientOverlay(gradientColor)
             ) {
-                val movie = remember(moviesState, currentItemIndex) {
-                    moviesState[currentItemIndex]
+                val news = remember(newsState, currentItemIndex) {
+                    newsState[currentItemIndex]
                 }
 
                 Crossfade(
-                    targetState = movie.posterUri,
+                    targetState = news.posterUri,
                     label = "posterUriCrossfade"
                 ) { posterUri ->
                     AsyncImage(
@@ -86,10 +82,9 @@ fun Top10MoviesList(
         },
         list = {
             Column {
-                // TODO this causes the whole vertical list to jump
                 if (isListFocused) {
-                    val movie = remember(moviesState, currentItemIndex) {
-                        moviesState[currentItemIndex]
+                    val movie = remember(newsState, currentItemIndex) {
+                        newsState[currentItemIndex]
                     }
                     Column(
                         modifier = Modifier.padding(
@@ -112,13 +107,11 @@ fun Top10MoviesList(
                         )
                     }
                 }
-                ImmersiveListMoviesRow(
+                ImmersiveListNewsRow(
                     itemDirection = ItemDirection.Horizontal,
-                    movies = moviesState,
+                    news = newsState,
                     title = if (isListFocused) null
                     else stringResource(R.string.top_10_movies_title),
-                    showItemTitle = !isListFocused,
-//                    onMovieClick = onMovieClick,
                     showIndexOverImage = true,
                     focusedItemIndex = { focusedIndex -> currentItemIndex = focusedIndex },
                 )
@@ -127,7 +120,7 @@ fun Top10MoviesList(
     )
 }
 
-fun Modifier.gradientOverlay(gradientColor: Color) = this then drawWithCache {
+fun Modifier.gradientOverlay(gradientColor: Color) = this.then(drawWithCache {
     val horizontalGradient = Brush.horizontalGradient(
         colors = listOf(
             gradientColor,
@@ -164,4 +157,4 @@ fun Modifier.gradientOverlay(gradientColor: Color) = this then drawWithCache {
         drawRect(verticalGradient)
         drawRect(linearGradient)
     }
-}
+})

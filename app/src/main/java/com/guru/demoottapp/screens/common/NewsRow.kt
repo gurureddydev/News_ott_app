@@ -1,13 +1,14 @@
 package com.guru.demoottapp.screens.common
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,12 +56,14 @@ import androidx.tv.material3.StandardCardLayout
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.guru.demoottapp.screens.home.Movie
+import com.guru.demoottapp.screens.home.News
 import com.guru.demoottapp.ui.theme.utils.createInitialFocusRestorerModifiers
 import com.guru.demoottapp.ui.theme.utils.ifElse
 import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 import com.guru.demoottapp.ui.theme.NewsBorderWidth
 import com.guru.demoottapp.ui.theme.NewsCardShape
+import com.guru.demoottapp.util.StringConstants
+import com.guru.demoottapp.util.showToast
 
 enum class ItemDirection(val aspectRatio: Float) {
     Vertical(10.5f / 16f),
@@ -69,39 +72,36 @@ enum class ItemDirection(val aspectRatio: Float) {
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-fun MoviesRow(
+fun NewsRow(
     modifier: Modifier = Modifier,
     itemDirection: ItemDirection = ItemDirection.Vertical,
     startPadding: Dp = rememberChildPadding().start,
     endPadding: Dp = rememberChildPadding().end,
-    title: String? = null,
+    title: String,
     titleStyle: TextStyle = MaterialTheme.typography.headlineLarge.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp
     ),
-    showItemTitle: Boolean = true,
     showIndexOverImage: Boolean = false,
     focusedItemIndex: (index: Int) -> Unit = {},
-    movies: List<Movie>,
-    onMovieClick: (movie: Movie) -> Unit = {}
+    news: List<News>,
+    onMovieClick: (news: News) -> Unit = {}
 ) {
     Column(
         modifier = modifier.focusGroup()
     ) {
-        title?.let { nnTitle ->
-            Text(
-                text = nnTitle,
-                style = titleStyle,
-                color = Color.White,
-                modifier = Modifier
-                    .alpha(1f)
-                    .padding(start = startPadding)
-                    .padding(vertical = 16.dp)
-            )
-        }
+        Text(
+            text = title,
+            style = titleStyle,
+            color = Color.White,
+            modifier = Modifier
+                .alpha(1f)
+                .padding(start = startPadding)
+                .padding(vertical = 16.dp)
+        )
 
         AnimatedContent(
-            targetState = movies,
+            targetState = news,
             label = "",
         ) { movieState ->
             val focusRestorerModifiers = createInitialFocusRestorerModifiers()
@@ -117,7 +117,7 @@ fun MoviesRow(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 itemsIndexed(movieState, key = { _, movie -> movie.id }) { index, movie ->
-                    MoviesRowItem(
+                    NewsRowItem(
                         modifier = Modifier
                             .ifElse(
                                 index == 0,
@@ -128,8 +128,7 @@ fun MoviesRow(
                         index = index,
                         itemDirection = itemDirection,
                         onMovieClick = onMovieClick,
-                        movie = movie,
-                        showItemTitle = showItemTitle,
+                        news = movie,
                         showIndexOverImage = showIndexOverImage
                     )
                 }
@@ -138,9 +137,10 @@ fun MoviesRow(
     }
 }
 
+
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalTvMaterial3Api::class)
 @Composable
-fun ImmersiveListScope.ImmersiveListMoviesRow(
+fun ImmersiveListScope.ImmersiveListNewsRow(
     modifier: Modifier = Modifier,
     startPadding: Dp = rememberChildPadding().start,
     endPadding: Dp = rememberChildPadding().end,
@@ -150,18 +150,17 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp
     ),
-    showItemTitle: Boolean = true,
     showIndexOverImage: Boolean = false,
     focusedItemIndex: (index: Int) -> Unit = {},
-    movies: List<Movie>,
-    onMovieClick: (movie: Movie) -> Unit = {}
+    news: List<News>,
+    onMovieClick: (news: News) -> Unit = {}
 ) {
     Column(
         modifier = modifier.focusGroup()
     ) {
-        title?.let { nnTitle ->
+        if (title != null) {
             Text(
-                text = nnTitle,
+                text = title,
                 style = titleStyle,
                 color = Color.White,
                 modifier = Modifier
@@ -172,7 +171,7 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
         }
 
         AnimatedContent(
-            targetState = movies,
+            targetState = news,
             label = "",
         ) { movieState ->
             TvLazyRow(
@@ -184,7 +183,7 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
                 movieState.forEachIndexed { index, movie ->
                     item {
                         key(movie.id) {
-                            MoviesRowItem(
+                            NewsRowItem(
                                 modifier = Modifier
                                     .weight(1f)
                                     .immersiveListItem(index),
@@ -192,8 +191,7 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
                                 index = index,
                                 itemDirection = itemDirection,
                                 onMovieClick = onMovieClick,
-                                movie = movie,
-                                showItemTitle = showItemTitle,
+                                news = movie,
                                 showIndexOverImage = showIndexOverImage
                             )
                         }
@@ -209,17 +207,17 @@ fun ImmersiveListScope.ImmersiveListMoviesRow(
 
 @Composable
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalTvMaterial3Api::class)
-private fun MoviesRowItem(
+private fun NewsRowItem(
     modifier: Modifier = Modifier,
     focusedItemIndex: (index: Int) -> Unit,
     index: Int,
     itemDirection: ItemDirection,
-    onMovieClick: (movie: Movie) -> Unit,
-    movie: Movie,
-    showItemTitle: Boolean,
+    onMovieClick: (news: News) -> Unit,
+    news: News,
     showIndexOverImage: Boolean
 ) {
     var isItemFocused by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     StandardCardLayout(
         modifier = Modifier
@@ -236,21 +234,22 @@ private fun MoviesRowItem(
             }
             .then(modifier),
         title = {
-            MoviesRowItemText(
-                showItemTitle = showItemTitle,
-                isItemFocused = isItemFocused,
-                movie = movie
+            NewsRowItemText(
+                news = news
             )
         },
         imageCard = {
             CardLayoutDefaults.ImageCard(
-                onClick = { onMovieClick(movie) },
+                onClick = {
+                    context.showToast("Watch news")
+                    onMovieClick(news)
+                          },
                 shape = CardDefaults.shape(NewsCardShape),
                 border = CardDefaults.border(
                     focusedBorder = Border(
                         border = BorderStroke(
                             width = NewsBorderWidth,
-                            color = Color.White // Set color to white
+                            color = Color.White
                         ),
                         shape = NewsCardShape
                     )
@@ -258,12 +257,12 @@ private fun MoviesRowItem(
                 scale = CardDefaults.scale(focusedScale = 1f),
                 interactionSource = it
             ) {
-                MoviesRowItemImage(
+                NewsRowItemImage(
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(itemDirection.aspectRatio),
                     showIndexOverImage = showIndexOverImage,
-                    movie = movie,
+                    news = news,
                     index = index,
                     itemDirection = ItemDirection.Horizontal
                 )
@@ -274,14 +273,14 @@ private fun MoviesRowItem(
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-private fun MoviesRowItemImage(
+private fun NewsRowItemImage(
     showIndexOverImage: Boolean,
-    movie: Movie,
+    news: News,
     index: Int,
     itemDirection: ItemDirection,
     modifier: Modifier = Modifier,
 ) {
-    Box(contentAlignment = Alignment.CenterStart) {
+    Box(contentAlignment = Alignment.BottomStart) {
         val imageSize = when (itemDirection) {
             ItemDirection.Vertical -> Pair(150.dp, 250.dp)
             ItemDirection.Horizontal -> Pair(250.dp, 150.dp)
@@ -302,11 +301,25 @@ private fun MoviesRowItemImage(
                 },
             model = ImageRequest.Builder(LocalContext.current)
                 .crossfade(true)
-                .data(movie.posterUri)
+                .data(news.posterUri)
                 .build(),
-            contentDescription = "movie poster of ${movie.name}",
+            contentDescription = "movie poster of ${news.name}",
             contentScale = ContentScale.Crop
         )
+        Box(
+            modifier = Modifier
+                .padding(6.dp)
+                .align(Alignment.BottomEnd)
+                .background(color = Color.Black)
+        ) {
+            Text(
+                modifier = Modifier.padding(3.dp),
+                text = "3:06",
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+            )
+        }
         if (showIndexOverImage) {
             Text(
                 modifier = Modifier.padding(16.dp),
@@ -327,31 +340,57 @@ private fun MoviesRowItemImage(
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-private fun MoviesRowItemText(
-    showItemTitle: Boolean,
-    isItemFocused: Boolean,
-    movie: Movie,
+private fun NewsRowItemText(
+    news: News,
     modifier: Modifier = Modifier,
-
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
     ) {
-    if (showItemTitle) {
-        val movieNameAlpha by animateFloatAsState(
-            targetValue = if (isItemFocused) 1f else 0f,
-            label = "",
-        )
         Text(
-            text = movie.name,
+            text = StringConstants.Composable.truncateText(news.name, 3),
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             ),
             color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = modifier
-                .alpha(movieNameAlpha)
-                .fillMaxWidth()
-                .padding(top = 4.dp),
+            modifier = Modifier.padding(top = 4.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 4.dp)
+        ) {
+            Text(
+                text = "4K HD",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = "12k Views",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White,
+                textAlign = TextAlign.Start,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Text(
+                text = "3 mins ago",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White,
+                textAlign = TextAlign.End, // Align text to the end (right)
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
+
+
+
+

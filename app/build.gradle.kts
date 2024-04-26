@@ -86,4 +86,5 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.22.0-rc")
     implementation("androidx.tv:tv-foundation:1.0.0-alpha10")
     implementation("androidx.tv:tv-material:1.0.0-alpha10")
+    implementation(libs.androidx.navigation.compose)
 }

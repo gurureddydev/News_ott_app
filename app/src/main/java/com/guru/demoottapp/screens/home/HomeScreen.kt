@@ -13,13 +13,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.tv.foundation.PivotOffsets
 import androidx.tv.foundation.lazy.list.TvLazyColumn
 import androidx.tv.foundation.lazy.list.rememberTvLazyListState
 import com.guru.demoottapp.util.StringConstants
-import com.guru.demoottapp.screens.common.MoviesRow
+import com.guru.demoottapp.screens.common.NewsRow
 import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
+import com.guru.demoottapp.util.showToast
 
 @Composable
 fun HomeScreen() {
@@ -32,7 +34,7 @@ fun HomeScreen() {
 private fun Catalog(
     modifier: Modifier = Modifier,
 ) {
-
+    val context = LocalContext.current
     val tvLazyListState = rememberTvLazyListState()
     var immersiveListHasFocus by remember { mutableStateOf(false) }
     val childPadding = rememberChildPadding()
@@ -53,17 +55,20 @@ private fun Catalog(
     ) {
 
         item {
-            FeaturedMoviesCarousel(
+            FeaturedNewsCarousel(
                 padding = childPadding,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(324.dp)
+                    .height(324.dp),
+                onClick = {
+                    context.showToast("Carousel clicked!")
+                }
             )
         }
         item(contentType = "MoviesRow") {
-            MoviesRow(
+            NewsRow(
                 modifier = Modifier.padding(top = 16.dp),
-                movies = generateDummyMovies(),
+                news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenTrendingTitle,
             )
         }
@@ -73,13 +78,13 @@ private fun Catalog(
                     .onFocusChanged {
                         immersiveListHasFocus = it.hasFocus
                     },
-                moviesState = generateDummyMovies(),
+                newsState = generateDummyMovies(),
             )
         }
         item(contentType = "MoviesRow") {
-            MoviesRow(
+            NewsRow(
                 modifier = Modifier.padding(top = 16.dp),
-                movies = generateDummyMovies(),
+                news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenNowPlayingMoviesTitle,
             )
         }
