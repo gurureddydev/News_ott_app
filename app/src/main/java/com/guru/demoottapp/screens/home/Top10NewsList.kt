@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,7 +43,7 @@ fun Top10MoviesList(
     modifier: Modifier = Modifier,
     newsState: List<News>,
 ) {
-    var currentItemIndex by remember { mutableStateOf(0) }
+    var currentItemIndex by remember { mutableIntStateOf(0) }
     var isListFocused by remember { mutableStateOf(false) }
 
     ImmersiveList(
@@ -64,7 +65,7 @@ fun Top10MoviesList(
 
                 Crossfade(
                     targetState = news.posterUri,
-                    label = "posterUriCrossfade"
+                    label = "posterUriCrossFade"
                 ) { posterUri ->
                     AsyncImage(
                         modifier = Modifier
@@ -77,7 +78,6 @@ fun Top10MoviesList(
                         contentScale = ContentScale.Crop
                     )
                 }
-
             }
         },
         list = {

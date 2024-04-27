@@ -202,9 +202,6 @@ private fun Body(
         navController = navController,
         startDestination = Screens.Home(),
     ) {
-//        composable(Screens.Profile()) {
-//            ProfileScreen()
-//        }
         composable(Screens.Home()) {
             HomeScreen()
         }
@@ -217,23 +214,9 @@ private fun Body(
         composable(Screens.Bookmarks()) {
             BookmarkScreen()
         }
-//        composable(Screens.Shows()) {
-//            ShowsScreen(
-//                onTVShowClick = { movie -> openMovieDetailsScreen(movie.id) },
-//                onScroll = updateTopBarVisibility,
-//                isTopBarVisible = isTopBarVisible
-//            )
-//        }
-//        composable(Screens.Favourites()) {
-//            FavouritesScreen(
-//                onMovieClick = openMovieDetailsScreen,
-//                onScroll = updateTopBarVisibility,
-//                isTopBarVisible = isTopBarVisible
-//            )
-//        }
         composable(Screens.Search()) {
             SearchScreen(
                 onScroll = updateTopBarVisibility
             )
         }
-        }
+    }

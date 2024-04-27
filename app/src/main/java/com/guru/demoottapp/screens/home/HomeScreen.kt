@@ -53,7 +53,6 @@ private fun Catalog(
         pivotOffsets = if (immersiveListHasFocus) pivotOffsetForImmersiveList else pivotOffset,
         contentPadding = PaddingValues(bottom = 108.dp)
     ) {
-
         item {
             FeaturedNewsCarousel(
                 padding = childPadding,
@@ -63,13 +62,6 @@ private fun Catalog(
                 onClick = {
                     context.showToast("Carousel clicked!")
                 }
-            )
-        }
-        item(contentType = "MoviesRow") {
-            NewsRow(
-                modifier = Modifier.padding(top = 16.dp),
-                news = generateDummyMovies(),
-                title = StringConstants.Composable.HomeScreenTrendingTitle,
             )
         }
         item(contentType = "Top10MoviesList") {
@@ -85,8 +77,16 @@ private fun Catalog(
             NewsRow(
                 modifier = Modifier.padding(top = 16.dp),
                 news = generateDummyMovies(),
+                title = StringConstants.Composable.HomeScreenTrendingTitle,
+            )
+        }
+        item(contentType = "MoviesRow") {
+            NewsRow(
+                modifier = Modifier.padding(top = 16.dp),
+                news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenNowPlayingMoviesTitle,
             )
         }
     }
 }
+
