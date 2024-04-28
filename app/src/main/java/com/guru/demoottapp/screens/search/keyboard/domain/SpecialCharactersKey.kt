@@ -1,0 +1,57 @@
+package com.guru.demoottapp.screens.search.keyboard.domain
+
+sealed class SpecialCharactersKey(
+    override val text: String,
+    override val span: Int = 1
+) : Key {
+    object Dot : SpecialCharactersKey(".")
+    object Underscore : SpecialCharactersKey("_")
+    object Dash : SpecialCharactersKey("-")
+    object Dollar : SpecialCharactersKey("$")
+    object Plus : SpecialCharactersKey("+")
+    object And : SpecialCharactersKey("&")
+    object ParenthesesBracketsLeft : SpecialCharactersKey("(")
+    object ParenthesesBracketsRight : SpecialCharactersKey(")")
+    object BackSlash : SpecialCharactersKey("/")
+    object Asterisk : SpecialCharactersKey("*")
+    object Quotes : SpecialCharactersKey("\"")
+    object SingleQuotes : SpecialCharactersKey("\'")
+    object Colon : SpecialCharactersKey(":")
+    object Semicolon : SpecialCharactersKey(";")
+    object Exclamation : SpecialCharactersKey("!")
+    object Question : SpecialCharactersKey("?")
+    object Percent : SpecialCharactersKey("%")
+    object Hash : SpecialCharactersKey("#")
+    object Ampersat : SpecialCharactersKey("@")
+    object Comma : SpecialCharactersKey(",")
+
+    object Tide : SpecialCharactersKey("~")
+    object Grave : SpecialCharactersKey("`")
+    object Pipe : SpecialCharactersKey("|")
+    object Bullet : SpecialCharactersKey("∙")
+    object Root : SpecialCharactersKey("√")
+    object PI : SpecialCharactersKey("π")
+    object Division : SpecialCharactersKey("÷")
+    object Multiple : SpecialCharactersKey("×")
+    object Paragraph : SpecialCharactersKey("¶")
+    object Triangle : SpecialCharactersKey("△")
+
+    object Pound : SpecialCharactersKey("£")
+    object Cent : SpecialCharactersKey("¢")
+    object Euro : SpecialCharactersKey("€")
+    object Yen : SpecialCharactersKey("¥")
+    object Caret : SpecialCharactersKey("^")
+    object Degree : SpecialCharactersKey("°")
+    object Equal : SpecialCharactersKey("=")
+    object CurlyBracketLeft : SpecialCharactersKey("{")
+    object CurlyBracketRight : SpecialCharactersKey("}")
+    object Backlash : SpecialCharactersKey("\\")
+
+    object CopyRight : SpecialCharactersKey("©")
+    object RegisterTrademark : SpecialCharactersKey("®")
+    object CheckMark : SpecialCharactersKey("✓")
+    object BoxBracketLeft : SpecialCharactersKey("[")
+    object BoxBracketRight : SpecialCharactersKey("]")
+    object ArrowLeft : SpecialCharactersKey("<")
+    object ArrowRight : SpecialCharactersKey(">")
+}

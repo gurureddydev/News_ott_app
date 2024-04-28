@@ -44,8 +44,7 @@ import com.guru.demoottapp.screens.Screens
 import com.guru.demoottapp.screens.bookmark.BookmarkScreen
 import com.guru.demoottapp.screens.categories.CategoriesScreen
 import com.guru.demoottapp.screens.home.HomeScreen
-import com.guru.demoottapp.screens.search.SearchScreen
-import com.guru.demoottapp.ui.theme.utils.Padding
+import com.guru.demoottapp.screens.search.SearchKeyboard
 import com.guru.demoottapp.util.StringConstants
 
 val ParentPadding = PaddingValues(vertical = 16.dp, horizontal = 58.dp)
@@ -215,8 +214,6 @@ private fun Body(
             BookmarkScreen()
         }
         composable(Screens.Search()) {
-            SearchScreen(
-                onScroll = updateTopBarVisibility
-            )
+            SearchKeyboard()
         }
     }

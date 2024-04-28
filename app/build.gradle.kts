@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
+    id("dagger.hilt.android.plugin")
 
 }
 
@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.tools.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -80,11 +81,12 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
     implementation("com.google.accompanist:accompanist-pager:0.22.0-rc")
     implementation("androidx.tv:tv-foundation:1.0.0-alpha10")
     implementation("androidx.tv:tv-material:1.0.0-alpha10")
     implementation(libs.androidx.navigation.compose)
+    implementation("androidx.compose.material:material-icons-extended:1.6.6")
 }
