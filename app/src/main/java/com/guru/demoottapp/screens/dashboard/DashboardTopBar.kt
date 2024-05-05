@@ -67,7 +67,7 @@ fun DashboardTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 4.dp)
                 .background(MaterialTheme.colorScheme.onBackground)
                 .focusRestorer(),
             verticalAlignment = Alignment.CenterVertically

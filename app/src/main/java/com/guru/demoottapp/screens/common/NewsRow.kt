@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
@@ -156,6 +158,8 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
     news: List<News>,
     onMovieClick: (news: News) -> Unit = {}
 ) {
+    val focusRequester = remember { FocusRequester() }
+
     Column(
         modifier = modifier.focusGroup()
     ) {
@@ -179,7 +183,9 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
                 modifier = Modifier.focusRestorer(),
                 pivotOffsets = PivotOffsets(parentFraction = 0.07f)
             ) {
-                item { Spacer(modifier = Modifier.padding(start = startPadding)) }
+                item { Spacer(modifier = Modifier.padding(start = startPadding))
+                    Box(modifier = Modifier.focusRequester(focusRequester))
+                }
 
                 movieState.forEachIndexed { index, movie ->
                     item {
@@ -202,6 +208,9 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
 
                 item { Spacer(modifier = Modifier.padding(start = endPadding)) }
             }
+        }
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
         }
     }
 }

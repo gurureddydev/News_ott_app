@@ -79,6 +79,7 @@ fun CategoriesScreen(
         is CategoriesScreenUiState.Loading -> {
             Loading()
         }
+
         is CategoriesScreenUiState.Ready -> {
             Catalog(
                 gridColumns = gridColumns,
@@ -134,7 +135,7 @@ private fun Catalog(
                                     focusedBorder = Border(
                                         border = BorderStroke(
                                             width = NewsBorderWidth,
-                                            color = MaterialTheme.colorScheme.onSurface
+                                            color = Color.White
                                         ),
                                         shape = NewsCardShape
                                     ),

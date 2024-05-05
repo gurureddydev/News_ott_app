@@ -105,7 +105,6 @@ fun DashboardScreen(
 
         var topBarHeightPx: Int by rememberSaveable { mutableIntStateOf(0) }
 
-        // Used to show/hide DashboardTopBar
         val topBarYOffsetPx by animateIntAsState(
             targetValue = if (isTopBarVisible) 0 else -topBarHeightPx,
             animationSpec = tween(),

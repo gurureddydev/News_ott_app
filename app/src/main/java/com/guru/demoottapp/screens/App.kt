@@ -10,100 +10,55 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.guru.demoottapp.screens.categories.CategoryNewsListScreen
 import com.guru.demoottapp.screens.dashboard.DashboardScreen
 
 @Composable
 fun App(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
 ) {
-
     val navController = rememberNavController()
     var isComingBackFromDifferentScreen by remember { mutableStateOf(false) }
 
-    NavHost(
-        navController = navController,
-        startDestination = Screens.Dashboard(),
-        builder = {
-//            composable(
-//                route = Screens.CategoryMovieList(),
-//                arguments = listOf(
-//                    navArgument(CategoryMovieListScreen.CategoryIdBundleKey) {
-//                        type = NavType.StringType
-//                    }
-//                )
-//            ) {
-//                CategoryMovieListScreen(
-//                    onBackPressed = {
-//                        if (navController.navigateUp()) {
-//                            isComingBackFromDifferentScreen = true
-//                        }
-//                    },
-//                    onMovieSelected = { movie ->
-//                        navController.navigate(
-//                            Screens.MovieDetails.withArgs(movie.id)
-//                        )
-//                    }
-//                )
-//            }
-//            composable(
-//                route = Screens.MovieDetails(),
-//                arguments = listOf(
-//                    navArgument(MovieDetailsScreen.MovieIdBundleKey) {
-//                        type = NavType.StringType
-//                    }
-//                )
-//            ) {
-//                MovieDetailsScreen(
-//                    goToMoviePlayer = {
-//                        navController.navigate(Screens.VideoPlayer())
-//                    },
-//                    refreshScreenWithNewMovie = { movie ->
-//                        navController.navigate(
-//                            Screens.MovieDetails.withArgs(movie.id)
-//                        ) {
-//                            popUpTo(Screens.MovieDetails()) {
-//                                inclusive = true
-//                            }
-//                        }
-//                    },
-//                    onBackPressed = {
-//                        if (navController.navigateUp()) {
-//                            isComingBackFromDifferentScreen = true
-//                        }
-//                    }
-//                )
-//            }
-            composable(route = Screens.Dashboard()) {
-                DashboardScreen(
-                    openCategoryMovieList = { categoryId ->
-//                        navController.navigate(
-//                            Screens.CategoryMovieList.withArgs(categoryId)
-//                        )
-                    },
-                    openMovieDetailsScreen = { movieId ->
-//                        navController.navigate(
-//                            Screens.MovieDetails.withArgs(movieId)
-//                        )
-                    },
-                    openVideoPlayer = {
-//                        navController.navigate(Screens.VideoPlayer())
-                    },
-                    onBackPressed = onBackPressed,
-                    isComingBackFromDifferentScreen = isComingBackFromDifferentScreen,
-                    resetIsComingBackFromDifferentScreen = {
-                        isComingBackFromDifferentScreen = false
+    NavHost(navController = navController, startDestination = Screens.Dashboard(), builder = {
+        composable(route = Screens.CategoryMovieList(),
+            arguments = listOf(navArgument(CategoryNewsListScreen.CategoryIdBundleKey) {
+                type = NavType.StringType
+            })
+        ) {
+            CategoryNewsListScreen(
+                onBackPressed = {
+                    if (navController.navigateUp()) {
+                        isComingBackFromDifferentScreen = true
                     }
-                )
-            }
-//            composable(route = Screens.VideoPlayer()) {
-//                VideoPlayerScreen(
-//                    onBackPressed = {
-//                        if (navController.navigateUp()) {
-//                            isComingBackFromDifferentScreen = true
-//                        }
-//                    }
-//                )
-//            }
+                },
+                onMovieSelected = { movie ->
+//                    navController.navigate(
+//                        Screens.MovieDetails.withArgs(movie.id)
+//                    )
+                }
+            )
+
         }
-    )
+        composable(route = Screens.Dashboard()) {
+            DashboardScreen(openCategoryMovieList = { categoryId ->
+                navController.navigate(
+                    Screens.CategoryMovieList.withArgs(categoryId)
+                )
+            },
+                openMovieDetailsScreen = { movieId ->
+                    // Navigate to MovieDetailsScreen when a movie is clicked
+//                        navController.navigate("${Screens.MovieDetails}/$movieId")
+                },
+                openVideoPlayer = {
+                    // Navigate to VideoPlayerScreen when video player is opened
+//                        navController.navigate(Screens.VideoPlayer)
+                },
+                onBackPressed = onBackPressed,
+                isComingBackFromDifferentScreen = isComingBackFromDifferentScreen,
+                resetIsComingBackFromDifferentScreen = {
+                    isComingBackFromDifferentScreen = false
+                })
+        }
+    })
 }

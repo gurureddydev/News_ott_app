@@ -9,6 +9,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -62,7 +63,7 @@ data class News(
     val id: Long,
     val name: String,
     val description: String,
-    val posterUri: Int // Assuming this is the URI for the movie poster image
+    val posterUri: Int
 )
 
 // Function to generate dummy movie data
@@ -129,7 +130,7 @@ fun FeaturedNewsCarousel(
 ) {
     val movies = generateDummyMovies()
     val carouselState = rememberSaveable(saver = CarouselSaver) { CarouselState(0) }
-    var isCarouselFocused by remember { mutableStateOf(false) }
+    var isCarouselFocused by rememberSaveable { mutableStateOf(false) }
 
     Carousel(
         modifier = modifier
@@ -165,17 +166,18 @@ fun FeaturedNewsCarousel(
             CarouselItemBackground(
                 news = movie,
                 onClick = onClick,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().focusable(true)
             )
             // foreground
             CarouselItemForeground(
                 news = movie,
                 isCarouselFocused = isCarouselFocused,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().focusable(true)
             ) {
 //                goToVideoPlayer(movie)
             }
         }
+
     )
 }
 

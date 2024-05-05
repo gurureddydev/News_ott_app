@@ -89,4 +89,5 @@ dependencies {
     implementation("androidx.tv:tv-material:1.0.0-alpha10")
     implementation(libs.androidx.navigation.compose)
     implementation("androidx.compose.material:material-icons-extended:1.6.6")
+    implementation(libs.androidx.core.splashscreen)
 }

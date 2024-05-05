@@ -27,8 +27,8 @@ import androidx.tv.material3.MaterialTheme
 fun DashboardTopBarItemIndicator(
     currentTabPosition: DpRect,
     modifier: Modifier = Modifier,
-    activeColor: Color = Color(0xFF4F4D50),
-    inactiveColor: Color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f),
+    activeColor: Color = Color(0xFFFF5722),
+    inactiveColor: Color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
     anyTabFocused: Boolean,
     shape: Shape
 ) {
