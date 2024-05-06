@@ -1,6 +1,7 @@
 package com.guru.demoottapp.screens.home
 
 
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -57,11 +58,13 @@ import com.guru.demoottapp.R
 import com.guru.demoottapp.ui.theme.utils.Padding
 import com.guru.demoottapp.ui.theme.NewsBorderWidth
 import com.guru.demoottapp.ui.theme.NewsButtonShape
+import com.guru.demoottapp.ui.theme.utils.handleDPadKeyEvents
 
 // Dummy data models
 data class News(
     val id: Long,
     val name: String,
+    val videoUri: Uri,
     val description: String,
     val posterUri: Int
 )
@@ -72,42 +75,43 @@ fun generateDummyMovies(): List<News> {
         News(
             id = 0,
             name = "Breaking News: Earthquake Hits Major City",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
             description = "A powerful earthquake shook the city early this morning, causing widespread damage and panic.",
             posterUri = R.drawable.news
-        ),
-        News(
+        ), News(
             id = 1,
             name = "Political Scandal Uncovered",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
             description = "Investigative journalists reveal shocking details about corruption at the highest levels of government.",
             posterUri = R.drawable.news1
-        ),
-        News(
+        ), News(
             id = 2,
             name = "Climate Change Report: Urgent Action Needed",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
             description = "New scientific findings show that the effects of climate change are accelerating, prompting calls for immediate intervention.",
             posterUri = R.drawable.news2
-        ),
-        News(
+        ), News(
             id = 3,
             name = "Health Crisis: New Virus Strain Detected",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
             description = "Health officials warn about a new, highly contagious virus strain spreading rapidly across regions.",
             posterUri = R.drawable.news3
-        ),
-        News(
+        ), News(
             id = 4,
             name = "Technology Breakthrough: AI Revolutionizes Industry",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
             description = "Experts discuss the transformative impact of artificial intelligence on various sectors of the economy.",
             posterUri = R.drawable.news4
-        ),
-        News(
+        ), News(
             id = 5,
             name = "Global Economy Update: Market Volatility Continues",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
             description = "Financial analysts analyze the latest trends in global markets amid ongoing volatility and uncertainty.",
             posterUri = R.drawable.news3
-        ),
-        News(
+        ), News(
             id = 6,
             name = "Space Exploration: New Discoveries Beyond Our Solar System",
+            videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"),
             description = "Astronomers announce groundbreaking discoveries of exoplanets and potential signs of extraterrestrial life.",
             posterUri = R.drawable.news2
         )
@@ -116,63 +120,73 @@ fun generateDummyMovies(): List<News> {
 
 // Custom Saver for CarouselState
 @OptIn(ExperimentalTvMaterial3Api::class)
-val CarouselSaver = Saver<CarouselState, Int>(
-    save = { it.activeItemIndex },
-    restore = { CarouselState(it) }
-)
+val CarouselSaver =
+    Saver<CarouselState, Int>(save = { it.activeItemIndex }, restore = { CarouselState(it) })
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun FeaturedNewsCarousel(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    goToVideoPlayer: (news: News) -> Unit,
     padding: Padding,
 ) {
     val movies = generateDummyMovies()
     val carouselState = rememberSaveable(saver = CarouselSaver) { CarouselState(0) }
     var isCarouselFocused by rememberSaveable { mutableStateOf(false) }
 
-    Carousel(
-        modifier = modifier
-            .padding(start = padding.start, end = padding.start, top = padding.top)
-            .border(
-                width = NewsBorderWidth,
-                color = Color.White.copy(alpha = if (isCarouselFocused) 1f else 0f),
-                shape = ShapeDefaults.Medium,
-            )
-            .semantics {
-                contentDescription =
-                    StringConstants.Composable.ContentDescription.MoviesCarousel
-            }
-            .clip(ShapeDefaults.Medium)
-            .onFocusChanged {
-                isCarouselFocused = it.hasFocus
-            },
+    Carousel(modifier = modifier
+        .padding(
+            start = padding.start, end = padding.start, top = padding.top
+        )
+        .border(
+            width = NewsBorderWidth,
+            color = Color.White.copy(alpha = if (isCarouselFocused) 1f else 0f),
+            shape = ShapeDefaults.Medium,
+        )
+        .semantics {
+            contentDescription = StringConstants.Composable.ContentDescription.MoviesCarousel
+        }
+
+        .clip(ShapeDefaults.Medium)
+        .onFocusChanged {
+            isCarouselFocused = it.hasFocus
+        }
+        .handleDPadKeyEvents(onEnter = {
+            goToVideoPlayer(movies[carouselState.activeItemIndex])
+        }),
         itemCount = movies.size,
         carouselState = carouselState,
         carouselIndicator = {
             CarouselIndicator(
-                itemCount = movies.size,
-                activeItemIndex = carouselState.activeItemIndex
+                itemCount = movies.size, activeItemIndex = carouselState.activeItemIndex
             )
         },
-        contentTransformStartToEnd = fadeIn(tween(durationMillis = 1000))
-            .togetherWith(fadeOut(tween(durationMillis = 1000))),
-        contentTransformEndToStart = fadeIn(tween(durationMillis = 1000))
-            .togetherWith(fadeOut(tween(durationMillis = 1000))),
+        contentTransformStartToEnd = fadeIn(tween(durationMillis = 1000)).togetherWith(
+            fadeOut(
+                tween(durationMillis = 1000)
+            )
+        ),
+        contentTransformEndToStart = fadeIn(tween(durationMillis = 1000)).togetherWith(
+            fadeOut(
+                tween(durationMillis = 1000)
+            )
+        ),
         content = { index ->
             val movie = movies[index]
             // background
             CarouselItemBackground(
-                news = movie,
-                onClick = onClick,
-                modifier = Modifier.fillMaxSize().focusable(true)
+                news = movie, onClick = onClick, modifier = Modifier
+                    .fillMaxSize()
+                    .focusable(true)
             )
             // foreground
             CarouselItemForeground(
                 news = movie,
                 isCarouselFocused = isCarouselFocused,
-                modifier = Modifier.fillMaxSize().focusable(true)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .focusable(true)
             ) {
 //                goToVideoPlayer(movie)
             }
@@ -184,20 +198,16 @@ fun FeaturedNewsCarousel(
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 private fun BoxScope.CarouselIndicator(
-    itemCount: Int,
-    activeItemIndex: Int,
-    modifier: Modifier = Modifier
+    itemCount: Int, activeItemIndex: Int, modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .padding(32.dp)
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-            .graphicsLayer {
-                clip = true
-                shape = ShapeDefaults.ExtraSmall
-            }
-            .align(Alignment.BottomEnd)
-    ) {
+    Box(modifier = modifier
+        .padding(32.dp)
+        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+        .graphicsLayer {
+            clip = true
+            shape = ShapeDefaults.ExtraSmall
+        }
+        .align(Alignment.BottomEnd)) {
         CarouselDefaults.IndicatorRow(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -217,8 +227,7 @@ private fun CarouselItemForeground(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier,
-        contentAlignment = Alignment.BottomStart
+        modifier = modifier, contentAlignment = Alignment.BottomStart
     ) {
         Column(
             modifier = Modifier
@@ -245,28 +254,19 @@ private fun CarouselItemForeground(
                 maxLines = 1,
                 modifier = Modifier.padding(top = 8.dp)
             )
-            AnimatedVisibility(
-                visible = isCarouselFocused,
-                content = {
-                    WatchNowButton(onClick = onClick)
-                }
-            )
+            AnimatedVisibility(visible = isCarouselFocused, content = {
+                WatchNowButton(onClick = onClick)
+            })
         }
     }
 }
 
 @Composable
 private fun CarouselItemBackground(
-    news: News,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    news: News, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
-    AsyncImage(
-        model = news.posterUri,
-        contentDescription = StringConstants
-            .Composable
-            .ContentDescription
-            .moviePoster(news.name),
+    AsyncImage(model = news.posterUri,
+        contentDescription = StringConstants.Composable.ContentDescription.moviePoster(news.name),
         modifier = modifier
             .clickable { onClick() }
             .drawWithContent {
@@ -274,8 +274,7 @@ private fun CarouselItemBackground(
                 drawRect(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Color.Transparent,
-                            Color.Black.copy(alpha = 0.5f)
+                            Color.Transparent, Color.Black.copy(alpha = 0.5f)
                         )
                     )
                 )

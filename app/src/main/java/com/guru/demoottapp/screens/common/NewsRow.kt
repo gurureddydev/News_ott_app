@@ -17,12 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -46,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.util.rangeTo
 import androidx.tv.foundation.PivotOffsets
 import androidx.tv.foundation.lazy.list.TvLazyRow
 import androidx.tv.foundation.lazy.list.itemsIndexed
@@ -60,11 +59,12 @@ import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.guru.demoottapp.screens.home.News
-import com.guru.demoottapp.ui.theme.utils.createInitialFocusRestorerModifiers
-import com.guru.demoottapp.ui.theme.utils.ifElse
-import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 import com.guru.demoottapp.ui.theme.NewsBorderWidth
 import com.guru.demoottapp.ui.theme.NewsCardShape
+import com.guru.demoottapp.ui.theme.utils.createInitialFocusRestorerModifiers
+import com.guru.demoottapp.ui.theme.utils.handleDPadKeyEvents
+import com.guru.demoottapp.ui.theme.utils.ifElse
+import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 import com.guru.demoottapp.util.StringConstants
 import com.guru.demoottapp.util.showToast
 
@@ -85,6 +85,7 @@ fun NewsRow(
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp
     ),
+    goToVideoPlayer: (news: News) -> Unit,
     showIndexOverImage: Boolean = false,
     focusedItemIndex: (index: Int) -> Unit = {},
     news: List<News>,
@@ -126,12 +127,14 @@ fun NewsRow(
                                 index == 0,
                                 focusRestorerModifiers.childModifier
                             )
-                            .weight(1f),
+                            .weight(1f)
+                            .handleDPadKeyEvents(onEnter = { goToVideoPlayer(movie) }),
                         focusedItemIndex = focusedItemIndex,
                         index = index,
                         itemDirection = itemDirection,
                         onMovieClick = onMovieClick,
                         news = movie,
+                        goToVideoPlayer = goToVideoPlayer,
                         showIndexOverImage = showIndexOverImage
                     )
                 }
@@ -147,6 +150,7 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
     modifier: Modifier = Modifier,
     startPadding: Dp = rememberChildPadding().start,
     endPadding: Dp = rememberChildPadding().end,
+    goToVideoPlayer: (news: News) -> Unit,
     itemDirection: ItemDirection = ItemDirection.Horizontal,
     title: String? = null,
     titleStyle: TextStyle = MaterialTheme.typography.headlineLarge.copy(
@@ -183,7 +187,8 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
                 modifier = Modifier.focusRestorer(),
                 pivotOffsets = PivotOffsets(parentFraction = 0.07f)
             ) {
-                item { Spacer(modifier = Modifier.padding(start = startPadding))
+                item {
+                    Spacer(modifier = Modifier.padding(start = startPadding))
                     Box(modifier = Modifier.focusRequester(focusRequester))
                 }
 
@@ -199,6 +204,7 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
                                 itemDirection = itemDirection,
                                 onMovieClick = onMovieClick,
                                 news = movie,
+                                goToVideoPlayer = goToVideoPlayer,
                                 showIndexOverImage = showIndexOverImage
                             )
                         }
@@ -209,9 +215,6 @@ fun ImmersiveListScope.ImmersiveListNewsRow(
                 item { Spacer(modifier = Modifier.padding(start = endPadding)) }
             }
         }
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
     }
 }
 
@@ -221,6 +224,7 @@ private fun NewsRowItem(
     modifier: Modifier = Modifier,
     focusedItemIndex: (index: Int) -> Unit,
     index: Int,
+    goToVideoPlayer: (news: News) -> Unit,
     itemDirection: ItemDirection,
     onMovieClick: (news: News) -> Unit,
     news: News,
@@ -253,7 +257,8 @@ private fun NewsRowItem(
                 onClick = {
                     context.showToast("Watch news")
                     onMovieClick(news)
-                          },
+                    goToVideoPlayer(news)
+                },
                 shape = CardDefaults.shape(NewsCardShape),
                 border = CardDefaults.border(
                     focusedBorder = Border(
@@ -390,7 +395,7 @@ private fun NewsRowItemText(
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
             Text(
-                text = "3 mins ago",
+                text = "3 min ago",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.White,
                 textAlign = TextAlign.End, // Align text to the end (right)
@@ -400,7 +405,3 @@ private fun NewsRowItemText(
         }
     }
 }
-
-
-
-

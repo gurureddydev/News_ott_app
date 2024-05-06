@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.guru.demoottapp.screens.categories.CategoryNewsListScreen
 import com.guru.demoottapp.screens.dashboard.DashboardScreen
+import com.guru.demoottapp.screens.videoPlayer.VideoPlayerScreen
 
 @Composable
 fun App(
@@ -51,14 +52,22 @@ fun App(
 //                        navController.navigate("${Screens.MovieDetails}/$movieId")
                 },
                 openVideoPlayer = {
-                    // Navigate to VideoPlayerScreen when video player is opened
-//                        navController.navigate(Screens.VideoPlayer)
+                        navController.navigate(Screens.VideoPlayer())
                 },
                 onBackPressed = onBackPressed,
                 isComingBackFromDifferentScreen = isComingBackFromDifferentScreen,
                 resetIsComingBackFromDifferentScreen = {
                     isComingBackFromDifferentScreen = false
                 })
+        }
+        composable(route = Screens.VideoPlayer()) {
+            VideoPlayerScreen(
+                onBackPressed = {
+                    if (navController.navigateUp()) {
+                        isComingBackFromDifferentScreen = true
+                    }
+                }
+            )
         }
     })
 }

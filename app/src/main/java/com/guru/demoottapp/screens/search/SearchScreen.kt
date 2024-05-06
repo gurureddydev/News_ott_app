@@ -191,11 +191,11 @@ fun SearchResult(
         }
 
         item {
-            NewsRow(
-                modifier = Modifier.padding(top = 16.dp),
-                news = generateDummyMovies(),
-                title = StringConstants.Composable.HomeScreenTrendingTitle,
-            )
+//            NewsRow(
+//                modifier = Modifier.padding(top = 16.dp),
+//                news = generateDummyMovies(),
+//                title = StringConstants.Composable.HomeScreenTrendingTitle,
+//            )
         }
     }
 }

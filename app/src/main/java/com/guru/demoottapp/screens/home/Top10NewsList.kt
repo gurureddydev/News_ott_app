@@ -42,7 +42,9 @@ import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 fun Top10MoviesList(
     modifier: Modifier = Modifier,
     newsState: List<News>,
-) {
+    goToVideoPlayer: (news: News) -> Unit,
+
+    ) {
     var currentItemIndex by remember { mutableIntStateOf(0) }
     var isListFocused by remember { mutableStateOf(false) }
 
@@ -114,6 +116,7 @@ fun Top10MoviesList(
                     else stringResource(R.string.top_10_movies_title),
                     showIndexOverImage = true,
                     focusedItemIndex = { focusedIndex -> currentItemIndex = focusedIndex },
+                    goToVideoPlayer = goToVideoPlayer
                 )
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,21 +19,31 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.foundation.PivotOffsets
 import androidx.tv.foundation.lazy.list.TvLazyColumn
 import androidx.tv.foundation.lazy.list.rememberTvLazyListState
-import com.guru.demoottapp.util.StringConstants
 import com.guru.demoottapp.screens.common.NewsRow
 import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
+import com.guru.demoottapp.util.StringConstants
 import com.guru.demoottapp.util.showToast
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onScroll: (isTopBarVisible: Boolean) -> Unit,
+    goToVideoPlayer: (news: News) -> Unit,
+    isTopBarVisible: Boolean,
+) {
     Catalog(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        onScroll = onScroll,
+        isTopBarVisible = isTopBarVisible,
+        goToVideoPlayer = goToVideoPlayer,
     )
 }
 
 @Composable
 private fun Catalog(
     modifier: Modifier = Modifier,
+    onScroll: (isTopBarVisible: Boolean) -> Unit,
+    goToVideoPlayer: (news: News) -> Unit,
+    isTopBarVisible: Boolean = true,
 ) {
     val context = LocalContext.current
     val tvLazyListState = rememberTvLazyListState()
@@ -42,51 +53,65 @@ private fun Catalog(
     val pivotOffsetForImmersiveList = remember { PivotOffsets(0f, 0f) }
     val shouldShowTopBar by remember {
         derivedStateOf {
-            tvLazyListState.firstVisibleItemIndex == 0 &&
-                    tvLazyListState.firstVisibleItemScrollOffset < 300
+            tvLazyListState.firstVisibleItemIndex == 0 && tvLazyListState.firstVisibleItemScrollOffset < 300
         }
     }
 
+    LaunchedEffect(shouldShowTopBar) {
+        onScroll(shouldShowTopBar)
+    }
+    LaunchedEffect(isTopBarVisible) {
+        if (isTopBarVisible) tvLazyListState.animateScrollToItem(0)
+    }
     TvLazyColumn(
         modifier = modifier,
         state = tvLazyListState,
         pivotOffsets = if (immersiveListHasFocus) pivotOffsetForImmersiveList else pivotOffset,
-        contentPadding = PaddingValues(bottom = 108.dp)
+        contentPadding = PaddingValues(bottom = 18.dp)
     ) {
         item {
             FeaturedNewsCarousel(
                 padding = childPadding,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(324.dp),
+                    .height(300.dp),
                 onClick = {
                     context.showToast("Carousel clicked!")
-                }
+                },
+                goToVideoPlayer = goToVideoPlayer,
             )
         }
         item(contentType = "Top10MoviesList") {
             Top10MoviesList(
                 modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(top = 16.dp)
                     .onFocusChanged {
                         immersiveListHasFocus = it.hasFocus
                     },
                 newsState = generateDummyMovies(),
+                goToVideoPlayer = goToVideoPlayer
             )
         }
         item(contentType = "MoviesRow") {
             NewsRow(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(top = 16.dp),
                 news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenTrendingTitle,
+                goToVideoPlayer = goToVideoPlayer
             )
         }
         item(contentType = "MoviesRow") {
             NewsRow(
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(top = 16.dp),
                 news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenNowPlayingMoviesTitle,
+                goToVideoPlayer = goToVideoPlayer
             )
         }
     }
 }
-

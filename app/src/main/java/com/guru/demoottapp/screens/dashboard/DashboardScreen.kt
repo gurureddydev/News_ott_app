@@ -44,6 +44,7 @@ import com.guru.demoottapp.screens.Screens
 import com.guru.demoottapp.screens.bookmark.BookmarkScreen
 import com.guru.demoottapp.screens.categories.CategoriesScreen
 import com.guru.demoottapp.screens.home.HomeScreen
+import com.guru.demoottapp.screens.home.News
 import com.guru.demoottapp.screens.search.SearchKeyboard
 import com.guru.demoottapp.util.StringConstants
 
@@ -53,7 +54,7 @@ val ParentPadding = PaddingValues(vertical = 16.dp, horizontal = 58.dp)
 fun DashboardScreen(
     openCategoryMovieList: (categoryId: String) -> Unit,
     openMovieDetailsScreen: (movieId: String) -> Unit,
-    openVideoPlayer: (StringConstants.Movie) -> Unit,
+    openVideoPlayer: (News) -> Unit,
     isComingBackFromDifferentScreen: Boolean,
     resetIsComingBackFromDifferentScreen: () -> Unit,
     onBackPressed: () -> Unit
@@ -189,7 +190,7 @@ private fun BackPressHandledArea(
 private fun Body(
     openCategoryMovieList: (categoryId: String) -> Unit,
     openMovieDetailsScreen: (movieId: String) -> Unit,
-    openVideoPlayer: (StringConstants.Movie) -> Unit,
+    openVideoPlayer: (News) -> Unit,
     updateTopBarVisibility: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
@@ -201,7 +202,11 @@ private fun Body(
         startDestination = Screens.Home(),
     ) {
         composable(Screens.Home()) {
-            HomeScreen()
+            HomeScreen(
+                onScroll = updateTopBarVisibility,
+                isTopBarVisible = isTopBarVisible,
+                goToVideoPlayer = openVideoPlayer,
+            )
         }
         composable(Screens.Categories()) {
             CategoriesScreen(

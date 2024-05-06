@@ -1,5 +1,6 @@
 package com.guru.demoottapp.screens.categories
 
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
@@ -65,72 +66,84 @@ fun CategoryNewsListScreen(
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v1
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v2
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v3
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v4
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v5
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v6
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v7
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v1
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v6
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v7
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
                 posterUri = R.drawable.v1
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
+                videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
                 posterUri = R.drawable.v1
             ),
@@ -266,12 +279,14 @@ fun CategoryDetailsPreview() {
                 News(
                     id = 0,
                     name = "Dummy News 1",
+                    videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                     description = "Description for Dummy News 1",
                     posterUri = R.drawable.news3
                 ),
                 News(
                     id = 1,
                     name = "Dummy News 2",
+                    videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                     description = "Description for Dummy News 2",
                     posterUri = R.drawable.news3
                 )
