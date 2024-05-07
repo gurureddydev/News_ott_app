@@ -44,7 +44,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.util.rangeTo
 import androidx.tv.foundation.PivotOffsets
 import androidx.tv.foundation.lazy.list.TvLazyRow
 import androidx.tv.foundation.lazy.list.itemsIndexed
@@ -257,7 +256,6 @@ private fun NewsRowItem(
                 onClick = {
                     context.showToast("Watch news")
                     onMovieClick(news)
-                    goToVideoPlayer(news)
                 },
                 shape = CardDefaults.shape(NewsCardShape),
                 border = CardDefaults.border(
