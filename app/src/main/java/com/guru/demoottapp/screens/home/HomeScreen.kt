@@ -70,15 +70,8 @@ private fun Catalog(
         contentPadding = PaddingValues(bottom = 18.dp)
     ) {
         item {
-            FeaturedNewsCarousel(
-                padding = childPadding,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                onClick = {
-                    context.showToast("Carousel clicked!")
-                },
-                goToVideoPlayer = goToVideoPlayer,
+            FeaturedCarouselExample(
+                goToVideoPlayer = goToVideoPlayer, padding = childPadding,
             )
         }
         item(contentType = "Top10MoviesList") {
@@ -88,9 +81,7 @@ private fun Catalog(
                     .padding(top = 16.dp)
                     .onFocusChanged {
                         immersiveListHasFocus = it.hasFocus
-                    },
-                newsState = generateDummyMovies(),
-                goToVideoPlayer = goToVideoPlayer
+                    }, newsState = generateDummyMovies(), goToVideoPlayer = goToVideoPlayer
             )
         }
         item(contentType = "MoviesRow") {
