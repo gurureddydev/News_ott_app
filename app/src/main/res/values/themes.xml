@@ -5,13 +5,13 @@
 
     <style name="Theme.DemoOTTApp.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_background</item>
         <item name="postSplashScreenTheme">@style/Theme.DemoOTTApp</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
 
-<!--    <style name="Theme.SplashScreens" parent="android:Theme.Material.Light.NoActionBar">-->
-<!--        <item name="statusBarBackground">#32357A</item>-->
-<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
-<!--    </style>-->
+    <!--    <style name="Theme.SplashScreens" parent="android:Theme.Material.Light.NoActionBar">-->
+    <!--        <item name="statusBarBackground">#32357A</item>-->
+    <!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
+    <!--    </style>-->
 </resources>

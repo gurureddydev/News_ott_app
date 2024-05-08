@@ -7,6 +7,8 @@
 
     <!-- Bitmap (Play Icon) -->
     <item android:drawable="@drawable/logo"
+        android:width="200dp"
+        android:height="200dp"
         android:gravity="center"/>
 
 </layer-list>

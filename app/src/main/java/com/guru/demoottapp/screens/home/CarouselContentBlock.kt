@@ -50,11 +50,11 @@ fun CarouselContentBlock(
         )
 
         Text(
-            text = item.description, style = MaterialTheme.typography.titleMedium.copy(
+            text = item.description, style = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.surface.copy(
                     alpha = 0.65f
                 ), shadow = Shadow(
-                    color = Color.Black.copy(alpha = 0.5f),
+                    color = Color.White.copy(alpha = 0.5f),
                     offset = Offset(x = 2f, y = 4f),
                     blurRadius = 2f
                 )
@@ -88,9 +88,9 @@ private fun WatchNowButton(item: News, goToVideoPlayer: (news: News) -> Unit) {
         contentPadding = androidx.tv.material3.ButtonDefaults.ButtonWithIconContentPadding,
         shape = androidx.tv.material3.ButtonDefaults.shape(shape = NewsButtonShape),
         colors = androidx.tv.material3.ButtonDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            focusedContentColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = MaterialTheme.colorScheme.surface,
+            focusedContentColor = MaterialTheme.colorScheme.surface,
         ),
         scale = androidx.tv.material3.ButtonDefaults.scale(scale = 1f)
     ) {

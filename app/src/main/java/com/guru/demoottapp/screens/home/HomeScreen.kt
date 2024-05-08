@@ -1,6 +1,7 @@
 package com.guru.demoottapp.screens.home
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -87,7 +88,7 @@ private fun Catalog(
         item(contentType = "MoviesRow") {
             NewsRow(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(vertical = 4.dp)
                     .padding(top = 16.dp),
                 news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenTrendingTitle,
