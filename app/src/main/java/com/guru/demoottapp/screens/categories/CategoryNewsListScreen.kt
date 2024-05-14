@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,89 +70,101 @@ fun CategoryNewsListScreen(
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v1
+                posterUri = R.drawable.n1
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v2
+                posterUri = R.drawable.n2
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v3
+                posterUri = R.drawable.n3
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v4
+                posterUri = R.drawable.n4
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v5
+                posterUri = R.drawable.n5
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v6
+                posterUri = R.drawable.n6
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v7
+                posterUri = R.drawable.n7
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v1
+                posterUri = R.drawable.n8
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v6
+                posterUri = R.drawable.n9
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v7
+                posterUri = R.drawable.n1
             ),
             News(
                 id = 1,
                 name = "Dummy News 2",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 2",
-                posterUri = R.drawable.v1
+                posterUri = R.drawable.n3
             ),
             News(
                 id = 0,
                 name = "Dummy News 1",
                 videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
                 description = "Description for Dummy News 1",
-                posterUri = R.drawable.v1
+                posterUri = R.drawable.n5
             ),
         )
     )
+    // State for holding the current search query
+    val searchQuery by remember { mutableStateOf("") }
+
+    // Filtered news list based on search query
+    val filteredNewsList = if (searchQuery.isEmpty()) {
+        dummyCategoryDetails.news // Show all news items if search query is empty
+    } else {
+        dummyCategoryDetails.news.filter { news ->
+            news.name.contains(searchQuery, ignoreCase = true)
+        }
+    }
+
     CategoryDetails(
-        categoryDetails = dummyCategoryDetails,
+        categoryDetails = dummyCategoryDetails.copy(news = filteredNewsList), // Pass the filtered news list to CategoryDetails
         onBackPressed = onBackPressed,
         onMovieSelected = onMovieSelected
     )
@@ -158,7 +172,7 @@ fun CategoryNewsListScreen(
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
-private fun CategoryDetails(
+fun CategoryDetails(
     categoryDetails: NewsCategoryDetails,
     onBackPressed: () -> Unit,
     onMovieSelected: (News) -> Unit,
@@ -265,7 +279,6 @@ fun CategoryNewsListScreenPreview() {
         onBackPressed = {},
         onMovieSelected = {}
     )
-
 }
 
 @Preview

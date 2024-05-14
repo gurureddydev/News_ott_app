@@ -22,7 +22,8 @@ fun App(
     var isComingBackFromDifferentScreen by remember { mutableStateOf(false) }
 
     NavHost(navController = navController, startDestination = Screens.Dashboard(), builder = {
-        composable(route = Screens.CategoryMovieList(),
+        composable(
+            route = Screens.CategoryMovieList(),
             arguments = listOf(navArgument(CategoryNewsListScreen.CategoryIdBundleKey) {
                 type = NavType.StringType
             })
@@ -52,7 +53,7 @@ fun App(
 //                        navController.navigate("${Screens.MovieDetails}/$movieId")
                 },
                 openVideoPlayer = {
-                        navController.navigate(Screens.VideoPlayer())
+                    navController.navigate(Screens.VideoPlayer())
                 },
                 onBackPressed = onBackPressed,
                 isComingBackFromDifferentScreen = isComingBackFromDifferentScreen,

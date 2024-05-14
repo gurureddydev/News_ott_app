@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -33,7 +32,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -45,8 +43,7 @@ import com.guru.demoottapp.screens.bookmark.BookmarkScreen
 import com.guru.demoottapp.screens.categories.CategoriesScreen
 import com.guru.demoottapp.screens.home.HomeScreen
 import com.guru.demoottapp.screens.home.News
-import com.guru.demoottapp.screens.search.SearchKeyboard
-import com.guru.demoottapp.util.StringConstants
+import com.guru.demoottapp.screens.search.SearchScreen
 
 val ParentPadding = PaddingValues(vertical = 16.dp, horizontal = 58.dp)
 
@@ -218,6 +215,8 @@ private fun Body(
             BookmarkScreen()
         }
         composable(Screens.Search()) {
-            SearchKeyboard()
+            SearchScreen(
+                goToVideoPlayer = openVideoPlayer,
+            )
         }
     }
