@@ -85,13 +85,34 @@ private fun Catalog(
                     }, newsState = generateDummyMovies(), goToVideoPlayer = goToVideoPlayer
             )
         }
+
         item(contentType = "MoviesRow") {
             NewsRow(
                 modifier = Modifier
-                    .padding(vertical = 4.dp)
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
                     .padding(top = 16.dp),
                 news = generateDummyMovies(),
                 title = StringConstants.Composable.HomeScreenTrendingTitle,
+                goToVideoPlayer = goToVideoPlayer
+            )
+        }
+        item(contentType = "MoviesRow") {
+            NewsRow(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(top = 16.dp),
+                news = generateDummyMovies(),
+                title = StringConstants.Composable.PopularFilmsThisWeekTitle,
+                goToVideoPlayer = goToVideoPlayer
+            )
+        }
+        item(contentType = "MoviesRow") {
+            NewsRow(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(top = 16.dp),
+                news = generateDummyMovies(),
+                title = StringConstants.Composable.BingeWatchDramasTitle,
                 goToVideoPlayer = goToVideoPlayer
             )
         }
