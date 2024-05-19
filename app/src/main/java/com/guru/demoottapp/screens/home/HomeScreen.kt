@@ -1,10 +1,7 @@
 package com.guru.demoottapp.screens.home
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +20,6 @@ import androidx.tv.foundation.lazy.list.rememberTvLazyListState
 import com.guru.demoottapp.screens.common.NewsRow
 import com.guru.demoottapp.ui.theme.utils.rememberChildPadding
 import com.guru.demoottapp.util.StringConstants
-import com.guru.demoottapp.util.showToast
 
 @Composable
 fun HomeScreen(
@@ -75,16 +71,16 @@ private fun Catalog(
                 goToVideoPlayer = goToVideoPlayer, padding = childPadding,
             )
         }
-        item(contentType = "Top10MoviesList") {
-            Top10MoviesList(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .padding(top = 16.dp)
-                    .onFocusChanged {
-                        immersiveListHasFocus = it.hasFocus
-                    }, newsState = generateDummyMovies(), goToVideoPlayer = goToVideoPlayer
-            )
-        }
+//        item(contentType = "Top10MoviesList") {
+//            Top10MoviesList(
+//                modifier = Modifier
+//                    .padding(horizontal = 8.dp, vertical = 4.dp)
+//                    .padding(top = 16.dp)
+//                    .onFocusChanged {
+//                        immersiveListHasFocus = it.hasFocus
+//                    }, newsState = generateDummyMovies(), goToVideoPlayer = goToVideoPlayer
+//            )
+//        }
 
         item(contentType = "MoviesRow") {
             NewsRow(

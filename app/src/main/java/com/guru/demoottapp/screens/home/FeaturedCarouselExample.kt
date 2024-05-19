@@ -168,5 +168,3 @@ fun FeaturedCarouselExample(
         }
     }
 }
-
-
